@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.widyatama.libraryapp.models;
 
 public class Book {
@@ -12,14 +8,13 @@ public class Book {
     private int year;
     private String isbn;
     private int copies;
-    private int categoryId;
+    private Category category;
     private String tanggaltanggalDiPinjam;
-    private int idPeminjaman; // Tambahkan ini
-    
+    private int idPeminjaman;
+
     public Book() {}
 
-    // Constructors, getters, and setters
-    public Book(int id, String title, String author, String publisher, int year, String isbn, int copies, int categoryId) {
+    public Book(int id, String title, String author, String publisher, int year, String isbn, int copies,Category category, String tanggaltanggalDiPinjam, int idPeminjaman) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -27,10 +22,11 @@ public class Book {
         this.year = year;
         this.isbn = isbn;
         this.copies = copies;
-        this.categoryId = categoryId;
+        this.category = category;
+        this.tanggaltanggalDiPinjam = tanggaltanggalDiPinjam;
+        this.idPeminjaman = idPeminjaman;
     }
-
-    // Getters and setters
+    
     public int getId() {
         return id;
     }
@@ -87,12 +83,12 @@ public class Book {
         this.copies = copies;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getTanggaltanggalDiPinjam() {
@@ -110,8 +106,6 @@ public class Book {
     public void setIdPeminjaman(int idPeminjaman) {
         this.idPeminjaman = idPeminjaman;
     }
-    
-    
 
     @Override
     public String toString() {

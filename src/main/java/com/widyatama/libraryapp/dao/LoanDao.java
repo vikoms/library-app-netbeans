@@ -5,28 +5,43 @@ import com.widyatama.libraryapp.models.Loan;
 import com.widyatama.libraryapp.connection.DatabaseConnection;
 import com.widyatama.libraryapp.models.Admin;
 import com.widyatama.libraryapp.models.Book;
+import com.widyatama.libraryapp.models.Category;
 import com.widyatama.libraryapp.models.Student;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoanDao {
-    public List<Loan> getAllLoans() {
+   public List<Loan> getAllLoans() {
         List<Loan> loans = new ArrayList<>();
+        String query = "SELECT p.id_peminjaman, p.id_anggota, a.nama, p.id_buku, b.judul, b.penulis, b.penerbit, b.tahun_terbit, b.ISBN, b.jumlah_eksemplar, b.id_category, k.name AS category_name, p.tanggal_pinjam, p.tanggal_kembali, p.id_admin, ad.name " +
+                       "FROM peminjaman p " +
+                       "JOIN anggota a ON p.id_anggota = a.id_anggota " +
+                       "JOIN buku b ON p.id_buku = b.id_buku " +
+                       "JOIN kategori k ON b.id_category = k.id_category " +
+                       "JOIN admin ad ON p.id_admin = ad.id_admin";
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(
-                     "SELECT p.id_peminjaman, p.id_anggota, a.nama, p.id_buku, b.judul, p.tanggal_pinjam, p.tanggal_kembali, p.id_admin, ad.name " +
-                             "FROM peminjaman p " +
-                             "JOIN anggota a ON p.id_anggota = a.id_anggota " +
-                             "JOIN buku b ON p.id_buku = b.id_buku " +
-                             "JOIN admin ad ON p.id_admin = ad.id_admin")) {
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
+                Category category = new Category(resultSet.getInt("id_category"), resultSet.getString("category_name"));
+                Book book = new Book(
+                        resultSet.getInt("id_buku"),
+                        resultSet.getString("judul"),
+                        resultSet.getString("penulis"),
+                        resultSet.getString("penerbit"),
+                        resultSet.getInt("tahun_terbit"),
+                        resultSet.getString("ISBN"),
+                        resultSet.getInt("jumlah_eksemplar"),
+                        category,
+                        resultSet.getString("tanggal_pinjam"),
+                        resultSet.getInt("id_peminjaman")
+                );
                 Loan loan = new Loan(
                         resultSet.getInt("id_peminjaman"),
                         new Student(resultSet.getInt("id_anggota"), resultSet.getString("nama"), null, null, null, null),
-                        new Book(resultSet.getInt("id_buku"), resultSet.getString("judul"), null, null, 0, null, 0, 0),
+                        book,
                         resultSet.getString("tanggal_pinjam"),
                         resultSet.getString("tanggal_kembali"),
                         new Admin(resultSet.getInt("id_admin"), resultSet.getString("name"), null, null, null, null)

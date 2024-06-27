@@ -26,7 +26,7 @@ public class Dashboard extends BaseFrame {
         // Title Panel
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        titlePanel.setBackground(new Color(70, 130, 180));  // Steel blue
+        titlePanel.setBackground(Color.BLACK);
 
         JLabel titleLabel = new JLabel("Library App");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
@@ -37,7 +37,7 @@ public class Dashboard extends BaseFrame {
         // Welcome Panel
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        topPanel.setBackground(new Color(135, 206, 250));  // Light sky blue
+        topPanel.setBackground(Color.WHITE);
 
         JLabel welcomeLabel = new JLabel("Welcome, " + AuthUtils.getInstance().getLoggedInAdmin().getName());
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -47,7 +47,7 @@ public class Dashboard extends BaseFrame {
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new GridBagLayout());
-        centerPanel.setBackground(new Color(240, 248, 255));  // Alice blue
+        centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -84,15 +84,18 @@ public class Dashboard extends BaseFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Open the book management frame
-                JOptionPane.showMessageDialog(Dashboard.this, "Manage Books clicked");
+                ManageBooksFrame manageBooksFrame = new ManageBooksFrame();
+                hideFrame();
+                manageBooksFrame.showFrame();
             }
         });
 
         kelolaMahasiswaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Open the student management frame
-                JOptionPane.showMessageDialog(Dashboard.this, "Manage Students clicked");
+                ManageStudentsFrame manageStudentsFrame = new ManageStudentsFrame();
+                hideFrame();
+                manageStudentsFrame.showFrame();
             }
         });
 
@@ -127,11 +130,11 @@ public class Dashboard extends BaseFrame {
     private JButton createStyledButton(String text, String iconPath, String toolTipText) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setBackground(new Color(30, 144, 255));  // Dodger blue
+        button.setBackground(Color.BLACK);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(100, 149, 237), 1),  // Cornflower blue
+                BorderFactory.createLineBorder(Color.BLACK, 1),
                 BorderFactory.createEmptyBorder(10, 20, 10, 20)
         ));
         try {
