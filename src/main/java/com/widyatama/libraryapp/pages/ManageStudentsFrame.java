@@ -91,136 +91,22 @@ public class ManageStudentsFrame extends BaseFrame {
     }
 
     private void loadStudentsData() {
-        StudentDao studentDao = new StudentDao();
-        students = studentDao.getAllStudents();
-        displayData(students);
     }
 
     private void applyFilters() {
-        String searchText = searchField.getText().toLowerCase();
-        List<Student> filteredStudents = students.stream()
-                .filter(student -> searchText.isEmpty() ||
-                        student.getName().toLowerCase().contains(searchText) ||
-                        student.getEmail().toLowerCase().contains(searchText))
-                .collect(Collectors.toList());
-        displayData(filteredStudents);
+        
     }
 
     private void displayData(List<Student> data) {
-        String[] columnNames = {"ID", "Name", "Address", "Phone", "Email", "Registration Date"};
-        model = new DefaultTableModel(columnNames, 0);
-
-        for (Student student : data) {
-            Object[] row = {
-                student.getId(),
-                student.getName(),
-                student.getAddress(),
-                student.getPhoneNumber(),
-                student.getEmail(),
-                student.getRegistrationDate()
-            };
-            model.addRow(row);
-        }
-
-        studentsTable.setModel(model);
-        TableColumnModel columnModel = studentsTable.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(50);
-        columnModel.getColumn(1).setPreferredWidth(150);
-        columnModel.getColumn(2).setPreferredWidth(200);
-        columnModel.getColumn(3).setPreferredWidth(100);
-        columnModel.getColumn(4).setPreferredWidth(200);
-        columnModel.getColumn(5).setPreferredWidth(150);
-        statusBar.setText(data.size() + " entries found");
     }
 
     private void createStudent() {
-        JTextField nameField = new JTextField();
-        JTextField addressField = new JTextField();
-        JTextField phoneField = new JTextField();
-        JTextField emailField = new JTextField();
-        JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.add(new JLabel("Name:"));
-        panel.add(nameField);
-        panel.add(new JLabel("Address:"));
-        panel.add(addressField);
-        panel.add(new JLabel("Phone:"));
-        panel.add(phoneField);
-        panel.add(new JLabel("Email:"));
-        panel.add(emailField);
-        int result = JOptionPane.showConfirmDialog(this, panel, "Create Student", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            String name = nameField.getText();
-            String address = addressField.getText();
-            String phone = phoneField.getText();
-            String email = emailField.getText();
-            if (!name.trim().isEmpty() && !address.trim().isEmpty() && !phone.trim().isEmpty() && !email.trim().isEmpty()) {
-                StudentDao studentDao = new StudentDao();
-                Student student = new Student(0, name, address, phone, email, new java.sql.Date(System.currentTimeMillis()).toString());
-                studentDao.addStudent(student);
-                loadStudentsData();
-            } else {
-                JOptionPane.showMessageDialog(this, "All fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
     }
 
     private void updateStudent() {
-        int selectedRow = studentsTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a student to update.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int studentId = (int) studentsTable.getValueAt(selectedRow, 0);
-        String currentName = (String) studentsTable.getValueAt(selectedRow, 1);
-        String currentAddress = (String) studentsTable.getValueAt(selectedRow, 2);
-        String currentPhone = (String) studentsTable.getValueAt(selectedRow, 3);
-        String currentEmail = (String) studentsTable.getValueAt(selectedRow, 4);
-
-        JTextField nameField = new JTextField(currentName);
-        JTextField addressField = new JTextField(currentAddress);
-        JTextField phoneField = new JTextField(currentPhone);
-        JTextField emailField = new JTextField(currentEmail);
-        JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.add(new JLabel("Name:"));
-        panel.add(nameField);
-        panel.add(new JLabel("Address:"));
-        panel.add(addressField);
-        panel.add(new JLabel("Phone:"));
-        panel.add(phoneField);
-        panel.add(new JLabel("Email:"));
-        panel.add(emailField);
-        int result = JOptionPane.showConfirmDialog(this, panel, "Update Student", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            String name = nameField.getText();
-            String address = addressField.getText();
-            String phone = phoneField.getText();
-            String email = emailField.getText();
-            if (!name.trim().isEmpty() && !address.trim().isEmpty() && !phone.trim().isEmpty() && !email.trim().isEmpty()) {
-                StudentDao studentDao = new StudentDao();
-                Student student = new Student(studentId, name, address, phone, email, new java.sql.Date(System.currentTimeMillis()).toString());
-                studentDao.updateStudent(student);
-                loadStudentsData();
-            } else {
-                JOptionPane.showMessageDialog(this, "All fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
     }
 
     private void deleteStudent() {
-        int selectedRow = studentsTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a student to delete.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int studentId = (int) studentsTable.getValueAt(selectedRow, 0);
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this student?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            StudentDao studentDao = new StudentDao();
-            studentDao.deleteStudent(studentId);
-            loadStudentsData();
-        }
     }
 
     public static void main(String[] args) {

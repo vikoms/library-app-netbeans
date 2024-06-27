@@ -91,85 +91,27 @@ public class ManageCategoriesFrame extends BaseFrame {
     }
 
     private void loadCategoriesData() {
-        CategoryDao categoryDao = new CategoryDao();
-        categories = categoryDao.getAllCategories();
-        displayData(categories);
+        
     }
 
     private void applyFilters() {
-        String searchText = searchField.getText().toLowerCase();
-        List<Category> filteredCategories = categories.stream()
-                .filter(category -> searchText.isEmpty() || category.getName().toLowerCase().contains(searchText))
-                .collect(Collectors.toList());
-        displayData(filteredCategories);
+        
     }
 
     private void displayData(List<Category> data) {
-        String[] columnNames = {"ID", "Name"};
-        model = new DefaultTableModel(columnNames, 0);
-
-        for (Category category : data) {
-            Object[] row = {
-                category.getId(),
-                category.getName()
-            };
-            model.addRow(row);
-        }
-
-        categoriesTable.setModel(model);
-        TableColumnModel columnModel = categoriesTable.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(50);
-        columnModel.getColumn(1).setPreferredWidth(200);
-        statusBar.setText(data.size() + " entries found");
+        
     }
 
     private void createCategory() {
-        String name = JOptionPane.showInputDialog(this, "Enter Category Name:");
-        if (name != null && !name.trim().isEmpty()) {
-            CategoryDao categoryDao = new CategoryDao();
-            Category category = new Category(0, name);
-            categoryDao.addCategory(category);
-            loadCategoriesData();
-        } else {
-            JOptionPane.showMessageDialog(this, "Category name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        
     }
 
     private void updateCategory() {
-        int selectedRow = categoriesTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a category to update.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int categoryId = (int) categoriesTable.getValueAt(selectedRow, 0);
-        String currentName = (String) categoriesTable.getValueAt(selectedRow, 1);
-
-        String newName = JOptionPane.showInputDialog(this, "Enter new Category Name:", currentName);
-        if (newName != null && !newName.trim().isEmpty()) {
-            CategoryDao categoryDao = new CategoryDao();
-            Category category = new Category(categoryId, newName);
-            categoryDao.updateCategory(category);
-            loadCategoriesData();
-        } else {
-            JOptionPane.showMessageDialog(this, "Category name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        
     }
 
     private void deleteCategory() {
-        int selectedRow = categoriesTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a category to delete.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int categoryId = (int) categoriesTable.getValueAt(selectedRow, 0);
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this category?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            CategoryDao categoryDao = new CategoryDao();
-            categoryDao.deleteCategory(categoryId);
-            loadCategoriesData();
-        }
+        
     }
 
     public static void main(String[] args) {
